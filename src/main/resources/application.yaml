@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: backendDevTest
+    feign:
+      uri: 'http://localhost:3001'
+server:
+  port: 5000
