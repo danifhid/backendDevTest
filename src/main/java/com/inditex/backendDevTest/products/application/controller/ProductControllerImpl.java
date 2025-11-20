@@ -1,14 +1,12 @@
 package com.inditex.backendDevTest.products.application.controller;
 
-import com.inditex.backendDevTest.products.application.dto.ProductDetailOutputDTO;
-import com.inditex.backendDevTest.products.application.exceptions.BadRequestException;
-import com.inditex.backendDevTest.products.application.mapper.ProductMapper;
+import com.inditex.backendDevTest.products.application.dto.ProductDetailDTO;
 import com.inditex.backendDevTest.products.application.service.ProductService;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,12 +16,14 @@ import java.util.List;
 public class ProductControllerImpl implements ProductController {
 
     private final ProductService productService;
-    private final ProductMapper mapper;
-    public ResponseEntity<List<ProductDetailOutputDTO>> getSimilarProducts(String idProduct) {
 
-        final List<ProductDetailOutputDTO> products = productService.similarProducts(idProduct)
+    public ResponseEntity<List<ProductDetailDTO>> getSimilarProducts(@PathVariable String idProduct) throws BadRequestException {
+
+        if (StringUtils.isBlank(idProduct) ) {
+            throw new BadRequestException("Product id must not be empty");
+        }
+        final List<ProductDetailDTO> products = productService.similarProducts(idProduct)
                 .stream()
-                .map(mapper::productDetailDtoToproductDetailOutputDto)
                 .toList();
 
         return ResponseEntity.ok(products);
