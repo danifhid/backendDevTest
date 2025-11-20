@@ -13,5 +13,5 @@ import java.util.List;
 @RequestMapping("/product")
 public interface ProductController {
     @GetMapping("/{idProduct}/similarids")
-    ResponseEntity<List<ProductDetailDTO>> getSimilarProducts(@PathVariable("idProduct") String productId) throws BadRequestException;
+    ResponseEntity<List<ProductDetailDTO>> getSimilarProducts(@PathVariable("idProduct") String productId) ;
 }
